@@ -457,7 +457,7 @@ function showQuiz(){
 $('qAns').addEventListener('click',function(e){
   var b=e.target.closest('.ans');if(!b||state!=='quiz'||!$('qAns').classList.contains('ready'))return;
   if(+b.getAttribute('data-v')===qAns){
-    state='quizok';b.classList.add('yes');sFound();buzz(60);say('ถูกต้อง เก่งมาก');
+    state='quizok';b.classList.add('yes');sFound();buzz(60);say('ถูกต้อง เก่งมาก'+(me?' '+me.name:''));
     burst(W/2,H*.4,30,1);
     setTimeout(function(){$('quiz').classList.remove('on');openChest()},750);
   }else{
