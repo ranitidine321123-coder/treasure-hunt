@@ -30,6 +30,7 @@ button{font-family:inherit;border:0;cursor:pointer}
 .pbtn{display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:26px;background:#fff;color:#8a2c9c;font-size:26px;font-weight:700;box-shadow:0 5px 0 rgba(120,40,140,.3)}
 .pbtn:active{transform:translateY(3px)}
 .pbtn span{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pbtn em{font-style:normal;font-size:18px}
 .pbtn small{font-size:17px;background:#f1e6ff;border-radius:14px;padding:2px 10px}
 #addRow{display:flex;gap:8px;width:min(100%,330px)}
 #nameIn{flex:1;min-width:0;font-family:inherit;font-size:24px;padding:10px 16px;border-radius:22px;border:3px solid #fff;outline:0;color:#5a2a6e;user-select:text;-webkit-user-select:text}
@@ -430,15 +431,23 @@ function tapChest(e){
   }
 }
 /* ---------- โจทย์เลข ---------- */
-var qAns=0,PIC=['🍎','🌸','⭐','🐥','🍓','🎈'];
+var HARD_AT=30,qAns=0,PIC=['🍎','🌸','⭐','🐥','🍓','🎈'];
 function ri(a,b){return a+Math.floor(R()*(b-a+1))}
 function showQuiz(){
   state='quiz';$('arrow').classList.add('hide');$('taps').textContent='';
-  var M=set.math,a,b,plus=R()<.55;
-  if(plus){a=ri(1,M-1);b=ri(1,M-a);qAns=a+b}else{a=ri(2,M);b=ri(1,a-1);qAns=a-b}
-  $('qEq').innerHTML=a+' <em>'+(plus?'+':'−')+'</em> '+b+' = ?';
+  var M=set.math,a,b,plus=R()<.55,x,hard=ownCount()>=HARD_AT;
   var pic=PIC[ri(0,PIC.length-1)],h='';
-  if(M<=10){
+  if(hard){
+    // ขั้นที่ 2: เลขสิบกว่า กับเลขหลักเดียว ไม่ต้องทด ไม่ต้องยืม เช่น 11+2, 15−3
+    if(plus){x=ri(0,8);a=10+x;b=ri(1,9-x);qAns=a+b;
+      h='🔟'+pic.repeat(x)+'<i>+</i>'+pic.repeat(b)}
+    else{x=ri(1,9);a=10+x;b=ri(1,x);qAns=a-b;
+      h='🔟'+pic.repeat(x-b)+'<s>'+pic.repeat(b)+'</s>'}
+  }else{
+    if(plus){a=ri(1,M-1);b=ri(1,M-a);qAns=a+b}else{a=ri(2,M);b=ri(1,a-1);qAns=a-b}
+  }
+  $('qEq').innerHTML=a+' <em>'+(plus?'+':'−')+'</em> '+b+' = ?';
+  if(!hard&&M<=10){
     if(plus)h=pic.repeat(a)+'<i>+</i>'+pic.repeat(b);
     else h=pic.repeat(a-b)+'<s>'+pic.repeat(b)+'</s>';
   }
@@ -489,11 +498,19 @@ function openChest(){
 }
 function keep(){
   if(state!=='reveal')return;
-  col[cur[0]]=(col[cur[0]]||0)+1;saveCol();hud();
+  col[cur[0]]=(col[cur[0]]||0)+1;
+  var lvUp=me&&!me.lv2&&ownCount()>=HARD_AT&&set.math>0;
+  if(lvUp)me.lv2=true;
+  saveCol();hud();
   sKeep();burst(60,40,25,.8);
   $('card').classList.remove('on');$('dim').classList.remove('on');$('rays').classList.remove('on');
   $('chest').classList.add('hide');$('hud').classList.remove('hide');
   startWalk();
+  if(lvUp){
+    sOpen(2);burst(W/2,H*.4,90,1.4);
+    hint('เลเวลอัป! โจทย์ยากขึ้นแล้ว 🌟');
+    say('เก่งมาก '+me.name+' เก็บครบ '+HARD_AT+' ชิ้นแล้ว เลเวลอัป โจทย์จะยากขึ้นนะ');
+  }
 }
 
 /* ---------- สมุดสะสม ---------- */
@@ -549,7 +566,7 @@ function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp
 function drawPlayers(){
   var h='';
   players.forEach(function(p,i){var n=0;ITEMS.forEach(function(it){if(p.col[it[0]])n++});
-    h+='<button class="pbtn" data-i="'+i+'">👧 <span>'+esc(p.name)+'</span><small>📖 '+n+'</small></button>'});
+    h+='<button class="pbtn" data-i="'+i+'">👧 <span>'+esc(p.name)+'</span>'+(n>=HARD_AT?'<em>🌟</em>':'')+'<small>📖 '+n+'</small></button>'});
   $('plist').innerHTML=h;
   $('askWho').textContent=players.length?'ใครจะเล่น? แตะชื่อตัวเองเลย':'ใส่ชื่อคนเล่นก่อนนะ';
   $('addRow').classList.toggle('hide',players.length>0);$('addBtn').classList.toggle('hide',players.length===0);
