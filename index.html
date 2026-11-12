@@ -21,9 +21,20 @@ button{font-family:inherit;border:0;cursor:pointer}
 /* HUD */
 #hud{pointer-events:none}
 #hud>*{pointer-events:auto}
-.pill{position:absolute;top:14px;height:54px;padding:0 16px;border-radius:30px;background:rgba(255,255,255,.92);box-shadow:0 4px 0 rgba(120,40,140,.25),0 8px 20px rgba(0,0,0,.2);font-size:22px;font-weight:700;color:#8a2c9c;display:flex;align-items:center;gap:8px}
+.pill{position:absolute;top:14px;max-width:46%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;height:54px;padding:0 16px;border-radius:30px;background:rgba(255,255,255,.92);box-shadow:0 4px 0 rgba(120,40,140,.25),0 8px 20px rgba(0,0,0,.2);font-size:22px;font-weight:700;color:#8a2c9c;display:flex;align-items:center;gap:8px}
 #bookBtn{left:14px}#bookBtn:active{transform:scale(.94)}
-#todayPill{right:14px}
+#who{right:14px}#who:active,#voiceBtn:active{transform:scale(.94)}
+#voiceBtn{position:absolute;left:14px;top:78px;width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.92);font-size:26px;box-shadow:0 4px 0 rgba(120,40,140,.25)}
+#voiceBtn.off{background:rgba(200,190,210,.9)}
+#plist{display:flex;flex-direction:column;gap:12px;width:min(100%,330px);max-height:40vh;overflow-y:auto;padding:4px}
+.pbtn{display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:26px;background:#fff;color:#8a2c9c;font-size:26px;font-weight:700;box-shadow:0 5px 0 rgba(120,40,140,.3)}
+.pbtn:active{transform:translateY(3px)}
+.pbtn span{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pbtn small{font-size:17px;background:#f1e6ff;border-radius:14px;padding:2px 10px}
+#addRow{display:flex;gap:8px;width:min(100%,330px)}
+#nameIn{flex:1;min-width:0;font-family:inherit;font-size:24px;padding:10px 16px;border-radius:22px;border:3px solid #fff;outline:0;color:#5a2a6e;user-select:text;-webkit-user-select:text}
+#addOk{font-size:22px;font-weight:700;color:#fff;padding:0 18px;border-radius:22px;background:linear-gradient(#ff8fc7,#ff4f9a);box-shadow:0 4px 0 #b81e63}
+#addBtn{font-size:22px;padding:12px 26px;animation:none}
 #gear{position:absolute;right:14px;top:78px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.55);font-size:20px;display:grid;place-items:center}
 #gear.hold{background:#ffd54a}
 #hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);max-width:90%;padding:12px 22px;border-radius:28px;background:rgba(255,255,255,.94);font-size:22px;font-weight:700;text-align:center;box-shadow:0 4px 0 rgba(120,40,140,.25),0 8px 20px rgba(0,0,0,.2);white-space:nowrap}
@@ -103,14 +114,15 @@ button{font-family:inherit;border:0;cursor:pointer}
 /* book */
 #book{background:linear-gradient(#fff0f8,#f1e6ff);display:flex;flex-direction:column}
 #bookHead{padding:14px 16px 10px;display:flex;align-items:center;gap:12px}
-#bookHead h2{margin:0;font-size:26px;flex:1;color:#8a2c9c}
+#bookHead h2{margin:0;font-size:22px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#8a2c9c}
 .x{width:54px;height:54px;border-radius:50%;background:#ff6fae;color:#fff;font-size:26px;font-weight:700;box-shadow:0 4px 0 #b81e63}
 #prog{margin:0 16px 8px;height:22px;border-radius:12px;background:#fff;box-shadow:inset 0 2px 4px rgba(0,0,0,.12);overflow:hidden;position:relative}
 #progFill{height:100%;background:linear-gradient(90deg,#ff8fc7,#b98cff,#7fd0ff)}
 #progTxt{position:absolute;inset:0;text-align:center;font-size:15px;font-weight:700;line-height:22px;color:#5a2a6e}
-#grid{flex:1;min-height:0;grid-auto-rows:minmax(30px,auto);overflow-y:auto;padding:8px 12px 30px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-content:start}
-.sec{grid-column:1/-1;align-self:end;height:30px;margin-bottom:-4px;font-size:19px;font-weight:700;color:#8a2c9c;margin-top:6px}
-.cell{height:88px;border-radius:18px;background:#fff;box-shadow:0 3px 0 rgba(120,40,140,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;font-size:12px;font-weight:700;overflow:hidden}
+#grid{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 8px 30px}
+.sec{font-size:19px;font-weight:700;color:#8a2c9c;margin:12px 6px 6px}
+.cells{display:flex;flex-wrap:wrap}
+.cell{flex:0 0 auto;width:calc(25% - 8px);margin:4px;height:88px;border-radius:18px;background:#fff;box-shadow:0 3px 0 rgba(120,40,140,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;font-size:12px;font-weight:700;overflow:hidden}
 .cell b{font-size:40px;line-height:1.15;font-weight:400}
 .cell.r1{background:linear-gradient(#fff,#efe3ff)}.cell.r2{background:linear-gradient(#fffbe0,#ffe9a6)}
 .cell.lock{background:#e9ddf2;color:#b9a6c9}.cell.lock b{filter:brightness(0) opacity(.18)}
@@ -148,7 +160,8 @@ button{font-family:inherit;border:0;cursor:pointer}
 
 <div id="hud" class="layer hide">
   <button class="pill" id="bookBtn">📖 <span id="bookCount">0</span></button>
-  <div class="pill" id="todayPill">🎁 <span id="todayTxt"></span></div>
+  <button class="pill" id="who">👤 <span id="whoName"></span></button>
+  <button id="voiceBtn">🗣️</button>
   <div id="gear">⚙️</div>
   <div id="meter"><div id="meterFill"></div></div>
   <div id="hint"></div>
@@ -159,21 +172,16 @@ button{font-family:inherit;border:0;cursor:pointer}
 <div id="start" class="layer screen">
   <div class="big">🧚‍♀️</div>
   <h1>นักล่าสมบัติ<br>ตัวน้อย</h1>
-  <p>ถือกล้องเดินส่องรอบบ้าน<br>หากล่องสมบัติวิเศษกันเถอะ!</p>
-  <button class="go" id="startBtn">▶ เริ่มเลย</button>
-  <button class="go pink" id="startBook" style="font-size:22px;padding:12px 30px;animation:none">📖 สมุดสะสม</button>
+  <p id="askWho">ใครจะเล่น? แตะชื่อตัวเองเลย</p>
+  <div id="plist"></div>
+  <button class="go pink" id="addBtn">➕ เพิ่มชื่อ</button>
+  <div id="addRow" class="hide"><input id="nameIn" maxlength="14" placeholder="พิมพ์ชื่อ" autocomplete="off"><button id="addOk">ตกลง</button></div>
   <p class="small">เดินช้า ๆ มองทางด้วยนะ · ผู้ใหญ่อยู่ใกล้ ๆ</p>
 </div>
 
-<div id="done" class="layer screen hide">
-  <div class="big">🌙</div>
-  <h1>เก่งมากเลย!</h1>
-  <p>วันนี้เปิดกล่องครบแล้ว<br>พรุ่งนี้มาล่าสมบัติกันใหม่นะ</p>
-  <button class="go pink" id="doneBook">📖 ดูสมุดสะสม</button>
-</div>
 
 <div id="book" class="layer hide">
-  <div id="bookHead"><h2>📖 สมุดสะสมสมบัติ</h2><button class="x" id="bookClose">✕</button></div>
+  <div id="bookHead"><h2>📖 สมุดของ<span id="bookWho"></span></h2><button class="x" id="bookClose">✕</button></div>
   <div id="prog"><div id="progFill"></div><div id="progTxt"></div></div>
   <div id="grid"></div>
 </div>
@@ -181,13 +189,10 @@ button{font-family:inherit;border:0;cursor:pointer}
 <div id="parent" class="layer hide">
   <div id="pbox">
     <h3>⚙️ สำหรับผู้ปกครอง</h3>
-    <div>จำนวนกล่องต่อวัน</div>
-    <div class="row" id="limRow"></div>
     <div>โจทย์เลขก่อนเปิดกล่อง</div>
     <div class="row" id="mathRow"></div>
     <div class="row"><button class="opt" id="optSound"></button><button class="opt" id="optVoice"></button></div>
-    <div class="row"><button class="opt" id="optMore">🎁 ให้เล่นต่ออีกรอบ</button></div>
-    <div class="row"><button class="opt warn" id="optReset">ล้างสมุดสะสม</button></div>
+    <div class="row"><button class="opt warn" id="optReset">ล้างสมุดสะสม</button><button class="opt warn" id="optDel">ลบชื่อนี้</button></div>
     <div class="row"><button class="opt sel" id="optClose">ปิด</button></div>
   </div>
 </div>
@@ -200,12 +205,25 @@ var R=Math.random, D2R=Math.PI/180;
 
 /* ---------- ข้อมูลสมบัติ ---------- */
 var ITEMS=[
- ['🌸','ดอกไม้',0],['🍭','อมยิ้ม',0],['🧁','คัพเค้ก',0],['🍓','สตรอว์เบอร์รี',0],['🎀','โบว์',0],['🐱','แมวเหมียว',0],
- ['🐰','กระต่าย',0],['🦋','ผีเสื้อ',0],['🐞','เต่าทอง',0],['🍩','โดนัท',0],['🎈','ลูกโป่ง',0],['🧸','ตุ๊กตาหมี',0],
- ['⭐','ดาว',0],['🐥','ลูกเจี๊ยบ',0],['🍦','ไอศกรีม',0],['🌷','ทิวลิป',0],['🐠','ปลาน้อย',0],['🍪','คุกกี้',0],
- ['💍','แหวน',1],['👑','มงกุฎ',1],['💎','เพชร',1],['🌈','สายรุ้ง',1],['🦄','ยูนิคอร์น',1],['🧜‍♀️','นางเงือก',1],
- ['🪄','ไม้กายสิทธิ์',1],['👗','ชุดเจ้าหญิง',1],['🦢','หงส์',1],['🐬','โลมา',1],['🔮','ลูกแก้ววิเศษ',1],['🎠','ม้าหมุน',1],
- ['🧚‍♀️','นางฟ้า',2],['🏰','ปราสาท',2],['🐉','มังกรน้อย',2],['🌟','ดาววิเศษ',2],['🦚','นกยูง',2],['👸','เจ้าหญิง',2]
+ ["🌸", "ดอกไม้", 0],["🍭", "อมยิ้ม", 0],["🧁", "คัพเค้ก", 0],["🍓", "สตรอว์เบอร์รี", 0],["🎀", "โบว์", 0],["🐱", "แมวเหมียว", 0],
+ ["🐰", "กระต่าย", 0],["🦋", "ผีเสื้อ", 0],["🐞", "เต่าทอง", 0],["🍩", "โดนัท", 0],["🎈", "ลูกโป่ง", 0],["🧸", "ตุ๊กตาหมี", 0],
+ ["⭐", "ดาว", 0],["🐥", "ลูกเจี๊ยบ", 0],["🍦", "ไอศกรีม", 0],["🌷", "ทิวลิป", 0],["🐠", "ปลาน้อย", 0],["🍪", "คุกกี้", 0],
+ ["🐶", "ลูกหมา", 0],["🐼", "แพนด้า", 0],["🐨", "โคอาล่า", 0],["🐹", "แฮมสเตอร์", 0],["🐧", "เพนกวิน", 0],["🐢", "เต่าน้อย", 0],
+ ["🐸", "กบน้อย", 0],["🦊", "จิ้งจอก", 0],["🐻", "หมีน้อย", 0],["🐷", "หมูน้อย", 0],["🐮", "วัวน้อย", 0],["🐵", "ลิงน้อย", 0],
+ ["🦔", "เม่น", 0],["🐿️", "กระรอก", 0],["🦉", "นกฮูก", 0],["🐝", "ผึ้ง", 0],["🐌", "หอยทาก", 0],["🦀", "ปู", 0],
+ ["🍎", "แอปเปิล", 0],["🍌", "กล้วย", 0],["🍉", "แตงโม", 0],["🍇", "องุ่น", 0],["🍒", "เชอร์รี", 0],["🍑", "ลูกพีช", 0],
+ ["🍍", "สับปะรด", 0],["🥭", "มะม่วง", 0],["🍰", "เค้ก", 0],["🍫", "ช็อกโกแลต", 0],["🍬", "ลูกอม", 0],["🍮", "พุดดิ้ง", 0],
+ ["🥞", "แพนเค้ก", 0],["🍡", "ขนมดังโงะ", 0],["🌻", "ทานตะวัน", 0],["🌼", "ดอกเดซี่", 0],["🌹", "กุหลาบ", 0],["🍀", "ใบโคลเวอร์", 0],
+ ["🍄", "เห็ด", 0],["☀️", "พระอาทิตย์", 0],["🌙", "พระจันทร์", 0],["☁️", "ก้อนเมฆ", 0],["❄️", "เกล็ดหิมะ", 0],["🎵", "ตัวโน้ต", 0],
+ ["🧩", "จิ๊กซอว์", 0],["🎨", "จานสี", 0],["🖍️", "สีเทียน", 0],["🎁", "ของขวัญ", 0],["🪁", "ว่าว", 0],["🎒", "กระเป๋า", 0],
+ ["💍", "แหวน", 1],["👑", "มงกุฎ", 1],["💎", "เพชร", 1],["🌈", "สายรุ้ง", 1],["🦄", "ยูนิคอร์น", 1],["🧜‍♀️", "นางเงือก", 1],
+ ["🪄", "ไม้กายสิทธิ์", 1],["👗", "ชุดเจ้าหญิง", 1],["🦢", "หงส์", 1],["🐬", "โลมา", 1],["🔮", "ลูกแก้ววิเศษ", 1],["🎠", "ม้าหมุน", 1],
+ ["🦩", "ฟลามิงโก", 1],["🦜", "นกแก้ว", 1],["🐳", "ปลาวาฬ", 1],["🐙", "ปลาหมึก", 1],["🦒", "ยีราฟ", 1],["🦓", "ม้าลาย", 1],
+ ["🐘", "ช้างน้อย", 1],["🦁", "สิงโต", 1],["🐯", "เสือน้อย", 1],["👠", "รองเท้าแก้ว", 1],["💄", "ลิปสติก", 1],["🎂", "เค้กวันเกิด", 1],
+ ["🎹", "เปียโน", 1],["🎻", "ไวโอลิน", 1],["🩰", "รองเท้าบัลเลต์", 1],["🌺", "ดอกชบา", 1],["🐚", "เปลือกหอย", 1],["🦥", "สลอธ", 1],
+ ["🧚‍♀️", "นางฟ้า", 2],["🏰", "ปราสาท", 2],["🐉", "มังกรน้อย", 2],["🌟", "ดาววิเศษ", 2],["🦚", "นกยูง", 2],["👸", "เจ้าหญิง", 2],
+ ["🧞‍♀️", "ยักษ์จีนี่", 2],["🪐", "ดาวเสาร์", 2],["🚀", "จรวด", 2],["🎆", "พลุ", 2],["🌠", "ดาวตก", 2],["🦕", "ไดโนเสาร์", 2],
+ ["🧙‍♀️", "แม่มดใจดี", 2],["💖", "หัวใจวิเศษ", 2],["🏆", "ถ้วยรางวัล", 2],["🎡", "ชิงช้าสวรรค์", 2]
 ];
 var RNAME=['⭐ สมบัติน่ารัก','⭐⭐ สมบัติหายาก','⭐⭐⭐ สมบัติในตำนาน'];
 var CHEST=[ // สีกล่องตามระดับ
@@ -217,10 +235,14 @@ var CHEST=[ // สีกล่องตามระดับ
 /* ---------- บันทึก ---------- */
 function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-var col=load('th_col',{}), set=load('th_set',{limit:10,sound:true,voice:true}), day=load('th_day',{d:'',n:0});
+var set=load('th_set',{sound:true,voice:true});
+var players=load('th_players',[]),pid=load('th_pid',null),col={},me=null;
+var oldCol=load('th_col',null); // ของเดิมก่อนมีระบบชื่อ จะย้ายให้คนแรกที่เพิ่มชื่อ
+function savePlayers(){save('th_players',players)}
+function usePlayer(p){me=p;pid=p.id;col=p.col;save('th_pid',pid)}
+function saveCol(){if(me){me.col=col;savePlayers()}}
 if(set.math==null)set.math=10;
 function today(){var t=new Date();return t.getFullYear()+'-'+(t.getMonth()+1)+'-'+t.getDate()}
-function checkDay(){if(day.d!==today()){day={d:today(),n:0};save('th_day',day)}}
 function ownCount(){var n=0;ITEMS.forEach(function(it){if(col[it[0]])n++});return n}
 
 /* ---------- เสียง ---------- */
@@ -344,7 +366,8 @@ function wrap(d){d=(d+180)%360;if(d<0)d+=360;return d-180}
 function hint(t){$('hint').textContent=t}
 function hud(){
   $('bookCount').textContent=ownCount()+'/'+ITEMS.length;
-  $('todayTxt').textContent=set.limit>0?(day.n+'/'+set.limit):day.n;
+  $('whoName').textContent=me?me.name:'';
+  $('voiceBtn').textContent=set.voice?'🗣️':'🔇';$('voiceBtn').classList.toggle('off',!set.voice);
 }
 function pick(){
   var x=R(),r=x<.07?2:(x<.35?1:0);
@@ -354,8 +377,7 @@ function pick(){
   return pool[Math.floor(R()*pool.length)];
 }
 function startWalk(){
-  checkDay();hud();
-  if(set.limit>0&&day.n>=set.limit){state='done';$('hud').classList.add('hide');$('done').classList.remove('hide');say('เก่งมากเลย พรุ่งนี้มาล่าสมบัติกันใหม่นะ');return}
+  hud();
   state='walk';walk=0;$('meter').classList.remove('hide');$('meterFill').style.width='0';
   $('chest').classList.add('hide');$('arrow').classList.add('hide');
   hint('เดินไปหาสมบัติกัน! 👣');
@@ -460,8 +482,7 @@ function openChest(){
 }
 function keep(){
   if(state!=='reveal')return;
-  col[cur[0]]=(col[cur[0]]||0)+1;save('th_col',col);
-  checkDay();day.n++;save('th_day',day);
+  col[cur[0]]=(col[cur[0]]||0)+1;saveCol();hud();
   sKeep();burst(60,40,25,.8);
   $('card').classList.remove('on');$('dim').classList.remove('on');$('rays').classList.remove('on');
   $('chest').classList.add('hide');$('hud').classList.remove('hide');
@@ -472,11 +493,12 @@ function keep(){
 function showBook(){
   var h='',n=ownCount();
   [0,1,2].forEach(function(r){
-    h+='<div class="sec">'+RNAME[r]+'</div>';
-    ITEMS.forEach(function(it){if(it[2]!==r)return;var c=col[it[0]]||0;
-      h+='<div class="cell r'+r+(c?'':' lock')+'"><b>'+it[0]+'</b>'+(c?it[1]:'?')+(c>1?'<u>×'+c+'</u>':'')+'</div>'});
+    var got=0,tot=0,cells='';
+    ITEMS.forEach(function(it){if(it[2]!==r)return;var c=col[it[0]]||0;tot++;if(c)got++;
+      cells+='<div class="cell r'+r+(c?'':' lock')+'"><b>'+it[0]+'</b>'+(c?it[1]:'?')+(c>1?'<u>×'+c+'</u>':'')+'</div>'});
+    h+='<div class="sec">'+RNAME[r]+' ('+got+'/'+tot+')</div><div class="cells">'+cells+'</div>';
   });
-  $('grid').innerHTML=h;
+  $('grid').innerHTML=h;$('bookWho').textContent=me?me.name:'';$('grid').scrollTop=0;
   $('progFill').style.width=(n/ITEMS.length*100)+'%';$('progTxt').textContent='สะสมแล้ว '+n+' / '+ITEMS.length;
   $('book').classList.remove('hide');
 }
@@ -487,51 +509,84 @@ $('grid').addEventListener('click',function(e){
 
 /* ---------- ผู้ปกครอง ---------- */
 function drawParent(){
-  var h='';[5,10,20,0].forEach(function(v){h+='<button class="opt'+(set.limit===v?' sel':'')+'" data-v="'+v+'">'+(v||'ไม่จำกัด')+'</button>'});
-  $('limRow').innerHTML=h;
-  h='';[0,5,10,20].forEach(function(v){h+='<button class="opt'+(set.math===v?' sel':'')+'" data-v="'+v+'">'+(v?'ถึง '+v:'ปิด')+'</button>'});
+  var h='';[0,5,10,20].forEach(function(v){h+='<button class="opt'+(set.math===v?' sel':'')+'" data-v="'+v+'">'+(v?'ถึง '+v:'ปิด')+'</button>'});
   $('mathRow').innerHTML=h;
   $('optSound').textContent='เสียง: '+(set.sound?'เปิด':'ปิด');$('optSound').classList.toggle('sel',set.sound);
   $('optVoice').textContent='เสียงพูด: '+(set.voice?'เปิด':'ปิด');$('optVoice').classList.toggle('sel',set.voice);
-  $('optReset').textContent='ล้างสมุดสะสม';resetArm=false;
+  $('optReset').textContent='ล้างสมุดของ '+(me?me.name:'');resetArm=false;
+  $('optDel').textContent='ลบชื่อ '+(me?me.name:'');delArm=false;
 }
-var resetArm=false,holdT=null;
+var resetArm=false,delArm=false,holdT=null;
 function gearDown(e){e.preventDefault();$('gear').classList.add('hold');holdT=setTimeout(function(){drawParent();$('parent').classList.remove('hide');gearUp()},1200)}
 function gearUp(){clearTimeout(holdT);$('gear').classList.remove('hold')}
 $('gear').addEventListener('pointerdown',gearDown);
 ['pointerup','pointerleave','pointercancel'].forEach(function(n){$('gear').addEventListener(n,gearUp)});
 $('gear').addEventListener('contextmenu',function(e){e.preventDefault()});
-$('limRow').addEventListener('click',function(e){var v=e.target.getAttribute('data-v');if(v==null)return;set.limit=+v;save('th_set',set);drawParent();hud()});
 $('mathRow').addEventListener('click',function(e){var v=e.target.getAttribute('data-v');if(v==null)return;set.math=+v;save('th_set',set);drawParent()});
 $('optSound').onclick=function(){set.sound=!set.sound;save('th_set',set);drawParent()};
-$('optVoice').onclick=function(){set.voice=!set.voice;save('th_set',set);drawParent()};
-$('optMore').onclick=function(){day.n=0;save('th_day',day);hud();$('parent').classList.add('hide');if(state==='done'){$('done').classList.add('hide');$('hud').classList.remove('hide');startWalk()}};
+$('optVoice').onclick=function(){set.voice=!set.voice;save('th_set',set);drawParent();hud()};
+$('optDel').onclick=function(){
+  if(!delArm){delArm=true;this.textContent='แตะอีกครั้งเพื่อยืนยันการลบชื่อ';return}
+  players=players.filter(function(p){return p!==me});savePlayers();me=null;col={};pid=null;save('th_pid',null);
+  $('parent').classList.add('hide');goHome();
+};
 $('optReset').onclick=function(){
   if(!resetArm){resetArm=true;this.textContent='แตะอีกครั้งเพื่อยืนยันการล้าง';return}
-  col={};save('th_col',col);hud();drawParent();
+  col={};saveCol();hud();drawParent();
 };
 $('optClose').onclick=function(){$('parent').classList.add('hide')};
 
 /* ---------- ปุ่ม ---------- */
-$('startBtn').onclick=function(){
-  audio();camera();sensors();
+/* ---------- เลือกผู้เล่น ---------- */
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function drawPlayers(){
+  var h='';
+  players.forEach(function(p,i){var n=0;ITEMS.forEach(function(it){if(p.col[it[0]])n++});
+    h+='<button class="pbtn" data-i="'+i+'">👧 <span>'+esc(p.name)+'</span><small>📖 '+n+'</small></button>'});
+  $('plist').innerHTML=h;
+  $('askWho').textContent=players.length?'ใครจะเล่น? แตะชื่อตัวเองเลย':'ใส่ชื่อคนเล่นก่อนนะ';
+  $('addRow').classList.toggle('hide',players.length>0);$('addBtn').classList.toggle('hide',players.length===0);
+}
+function goHome(){
+  state='idle';
+  ['world','hud','book','parent'].forEach(function(id){$(id).classList.add('hide')});
+  ['card','dim','rays','quiz'].forEach(function(id){$(id).classList.remove('on')});
+  $('start').classList.remove('hide');drawPlayers();
+}
+$('addBtn').onclick=function(){$('addRow').classList.remove('hide');this.classList.add('hide');$('nameIn').focus()};
+function addPlayer(){
+  var n=$('nameIn').value.trim();if(!n){$('nameIn').focus();return}
+  var p={id:Date.now().toString(36),name:n,col:{}};
+  if(oldCol&&!players.length){p.col=oldCol;oldCol=null;try{localStorage.removeItem('th_col');localStorage.removeItem('th_day')}catch(e){}}
+  players.push(p);savePlayers();$('nameIn').value='';$('nameIn').blur();drawPlayers();
+}
+$('addOk').onclick=addPlayer;
+$('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter')addPlayer()});
+$('plist').addEventListener('click',function(e){
+  var b=e.target.closest('.pbtn');if(!b)return;
+  usePlayer(players[+b.getAttribute('data-i')]);startGame();
+});
+$('who').onclick=function(){audio();goHome()};
+$('voiceBtn').onclick=function(){set.voice=!set.voice;save('th_set',set);hud();if(set.voice)say('เปิดเสียงพูดแล้ว');else try{speechSynthesis.cancel()}catch(e){}};
+var started=false;
+function startGame(){
+  audio();
+  if(!started){started=true;camera();sensors()}
   try{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(function(){})}catch(e){}
   try{navigator.wakeLock&&navigator.wakeLock.request('screen').catch(function(){})}catch(e){}
   $('start').classList.add('hide');$('world').classList.remove('hide');$('hud').classList.remove('hide');
-  sFound();say('ไปล่าสมบัติกันเลย');
+  sFound();say('สวัสดี '+me.name+' ไปล่าสมบัติกันเลย');
   startWalk();
-};
+}
 $('chest').addEventListener('pointerdown',tapChest);
 $('keep').onclick=keep;
 $('bookBtn').onclick=function(){audio();showBook()};
-$('startBook').onclick=function(){audio();showBook()};
-$('doneBook').onclick=showBook;
 $('bookClose').onclick=function(){$('book').classList.add('hide')};
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&state!=='idle'){try{navigator.wakeLock&&navigator.wakeLock.request('screen').catch(function(){})}catch(e){}}});
 
-checkDay();hud();
+drawPlayers();hud();
 requestAnimationFrame(frame);
-window.__th={get state(){return state},skip:function(){walk=NEED},get ans(){return qAns}};
+window.__th={home:goHome,get state(){return state},skip:function(){walk=NEED},get ans(){return qAns}};
 })();
 </script>
 </body>
