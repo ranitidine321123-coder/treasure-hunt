@@ -86,7 +86,7 @@ button{font-family:inherit;border:0;cursor:pointer}
 #keep{position:absolute;bottom:7vh;font-size:28px;font-weight:700;color:#fff;padding:14px 34px;border-radius:40px;background:linear-gradient(#ff8fc7,#ff4f9a);box-shadow:0 6px 0 #b81e63,0 12px 24px rgba(0,0,0,.3);animation:beat 1s ease-in-out infinite alternate}
 @keyframes beat{to{transform:scale(1.07)}}
 #keep:active{transform:translateY(4px);box-shadow:0 2px 0 #b81e63}
-#quiz{display:flex;flex-direction:column;align-items:center;padding-top:84px;gap:16px;pointer-events:none;opacity:0;transition:opacity .3s}
+#quiz{display:flex;flex-direction:column;align-items:center;padding-top:140px;gap:16px;pointer-events:none;opacity:0;transition:opacity .3s}
 #quiz.on{opacity:1;pointer-events:auto}
 #qBox{background:rgba(255,255,255,.96);border-radius:28px;padding:12px 24px 14px;max-width:92%;text-align:center;box-shadow:0 6px 0 rgba(120,40,140,.3),0 12px 26px rgba(0,0,0,.3)}
 #qEq{font-size:62px;font-weight:700;color:#8a2c9c;line-height:1.15;white-space:nowrap}
@@ -94,7 +94,9 @@ button{font-family:inherit;border:0;cursor:pointer}
 #qPics{font-size:30px;line-height:1.3;max-width:300px;margin:auto}
 #qPics s{text-decoration:none;opacity:.22}
 #qPics i{font-style:normal;font-weight:700;color:#ff4f9a;margin:0 8px}
-#qAns{display:flex;gap:18px}
+#qAns{display:flex;gap:18px;opacity:.35;transition:opacity .3s}
+#qAns.ready{opacity:1}
+#qAns:not(.ready) .ans{pointer-events:none}
 .ans{width:94px;height:94px;border-radius:50%;font-size:46px;font-weight:700;color:#fff;background:linear-gradient(#b98cff,#8a5be0);box-shadow:0 6px 0 #5d35b0,0 10px 20px rgba(0,0,0,.3)}
 .ans:active{transform:translateY(4px)}
 .ans.no{animation:wig .35s;background:#cfc6d8;box-shadow:0 6px 0 #a79bb5;pointer-events:none}
@@ -422,7 +424,10 @@ function tapChest(e){
   var ci=$('chestIn');ci.classList.remove('wig');void ci.offsetWidth;ci.classList.add('wig');
   burst(chest.x,chest.y,14,.7);
   $('taps').textContent='💖'.repeat(taps)+'🤍'.repeat(3-taps);
-  if(taps>=3){if(set.math>0)showQuiz();else openChest()}
+  if(taps>=3){
+    state='wait';$('taps').textContent='💖💖💖';
+    setTimeout(function(){if(state!=='wait')return;if(set.math>0)showQuiz();else openChest()},600);
+  }
 }
 /* ---------- โจทย์เลข ---------- */
 var qAns=0,PIC=['🍎','🌸','⭐','🐥','🍓','🎈'];
@@ -444,11 +449,13 @@ function showQuiz(){
   $('qAns').innerHTML=ch.map(function(v){return '<button class="ans" data-v="'+v+'">'+v+'</button>'}).join('');
   var el=$('chest');el.classList.add('center');place(W/2,H*.7,1);
   $('dim').classList.add('on');$('quiz').classList.add('on');
+  $('qAns').classList.remove('ready');
+  setTimeout(function(){$('qAns').classList.add('ready')},1000);
   hint('ตอบให้ถูก กล่องจะเปิด! 🔑');
   say(a+(plus?' บวก ':' ลบ ')+b+' ได้เท่าไหร่');
 }
 $('qAns').addEventListener('click',function(e){
-  var b=e.target.closest('.ans');if(!b||state!=='quiz')return;
+  var b=e.target.closest('.ans');if(!b||state!=='quiz'||!$('qAns').classList.contains('ready'))return;
   if(+b.getAttribute('data-v')===qAns){
     state='quizok';b.classList.add('yes');sFound();buzz(60);say('ถูกต้อง เก่งมาก');
     burst(W/2,H*.4,30,1);
