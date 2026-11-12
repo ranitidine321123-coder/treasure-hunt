@@ -459,7 +459,7 @@ $('qAns').addEventListener('click',function(e){
   if(+b.getAttribute('data-v')===qAns){
     state='quizok';b.classList.add('yes');sFound();buzz(60);say('ถูกต้อง เก่งมาก'+(me?' '+me.name:''));
     burst(W/2,H*.4,30,1);
-    setTimeout(function(){$('quiz').classList.remove('on');openChest()},750);
+    setTimeout(function(){$('quiz').classList.remove('on');openChest()},1200);
   }else{
     b.classList.add('no');tone(220,0,.25,'triangle',.2);tone(180,.12,.3,'triangle',.2);buzz(150);
     say('ลองอีกทีนะ');hint('ยังไม่ใช่ ลองนับดูอีกทีนะ 💪');
